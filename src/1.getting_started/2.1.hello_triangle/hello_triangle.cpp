@@ -30,7 +30,7 @@ int main()
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -100,10 +100,32 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // left  
-         0.5f, -0.5f, 0.0f, // right 
-         0.0f,  0.5f, 0.0f  // top   
-    }; 
+        -0.5f, -0.25f, 0.0f, 
+        -0.25f, 0.25f, 0.0f,  // bottom right
+         0.0f, -0.25f, 0.0f,  // bottom left
+        -0.25f, 0.25f, 0.0f,  // bottom right
+         0.25f, 0.25f, 0.0f,   // top left 
+         0.0f, -0.25f, 0.0f,  // bottom left
+         0.0f, -0.25f, 0.0f,  // bottom left
+         0.25f, 0.25f, 0.0f,   // top left 
+         0.5f, -0.25f, 0.0f
+    };
+
+    float color[] = {
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f
+    };
+
+    GLboolean edgeFlags[] = {
+        1, 1, 1, 1, 1, 1, 1, 1, 0
+    };
 
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
@@ -126,7 +148,7 @@ int main()
 
 
     // uncomment this call to draw in wireframe polygons.
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // render loop
     // -----------
@@ -142,9 +164,19 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         // draw our first triangle
+#if 0
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+#else
+        glColorPointer(3, GL_FLOAT, 0, color);
+        glVertexPointer(3, GL_FLOAT, 0, vertices);
+        glEdgeFlagPointer(0, edgeFlags);
+        glEnableClientState(GL_EDGE_FLAG_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+        glEnableClientState(GL_VERTEX_ARRAY);
+#endif
+
+        glDrawArrays(GL_TRIANGLES, 0, 9);
         // glBindVertexArray(0); // no need to unbind it every time 
  
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

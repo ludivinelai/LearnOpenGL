@@ -36,7 +36,7 @@ if(APPLE)
 endif(APPLE)
 
 if(WIN32)
-  set(LIBS glfw3 opengl32 assimp freetype irrKlang)
+  set(LIBS glfw3 opengl32 assimp freetype irrKlang ${CMAKE_SOURCE_DIR}/lib/glut.lib ${CMAKE_SOURCE_DIR}/lib/glut32.lib)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 elseif(UNIX AND NOT APPLE)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
@@ -96,6 +96,7 @@ set(1.getting_started
     7.2.camera_keyboard_dt
     7.3.camera_mouse_zoom
     7.4.camera_class
+    7.7.mipmap
 )
 
 set(2.lighting
@@ -179,8 +180,8 @@ set(GUEST_ARTICLES
 	8.guest/2021/1.scene/1.scene_graph
 	8.guest/2021/1.scene/2.frustum_culling
 	8.guest/2021/2.csm
-	#8.guest/2021/3.tessellation/terrain_gpu_dist
-	#8.guest/2021/3.tessellation/terrain_cpu_src
+	8.guest/2021/3.tessellation/terrain_gpu_dist
+	8.guest/2021/3.tessellation/terrain_cpu_src
 	8.guest/2021/4.dsa
 	8.guest/2022/5.computeshader_helloworld
 	8.guest/2022/6.physically_based_bloom

@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+/* one vertex buffer for two triangles */
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
